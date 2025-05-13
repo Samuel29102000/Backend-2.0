@@ -17,19 +17,19 @@ app.post('/api/gehalt', (req, res) => {
   }
 
   // Beispiel-Berechnung:
-  const lohnsteuer           = gehalt * 0.15;
-  const rentenversicherung   = gehalt * 0.093;
-  const krankenversicherung  = gehalt * 0.08;
-  const pflegeversicherung   = gehalt * 0.03;
+  const Lohnsteuer           = gehalt * 0.15;
+  const Rentenversicherung   = gehalt * 0.093;
+  const Krankenversicherung  = gehalt * 0.08;
+  const Pflegeversicherung   = gehalt * 0.03;
   const netto = gehalt - (lohnsteuer + rentenversicherung + krankenversicherung + pflegeversicherung);
 
   return res.json({
     netto: netto,
     abzuege: {
-      lohnsteuer: lohnsteuer,
-      rentenversicherung: rentenversicherung,
-      krankenversicherung: krankenversicherung,
-      pflegeversicherung: pflegeversicherung,
+      Lohnsteuer: lohnsteuer,
+      Rentenversicherung: rentenversicherung,
+      Krankenversicherung: krankenversicherung,
+      Pflegeversicherung: pflegeversicherung,
     }
   });
 });
