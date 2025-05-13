@@ -1,3 +1,4 @@
+// backend/index.js
 import express from 'express';
 import cors from 'cors';
 
@@ -7,19 +8,32 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+// Die korrekte Route, die dein Frontend aufruft:
 app.post('/api/gehalt', (req, res) => {
-  const { brutto, steuerSatz } = req.body;
+  const { gehalt, steuerklasse, kirchensteuer } = req.body;
 
-  if (typeof brutto !== 'number' || typeof steuerSatz !== 'number') {
-    return res.status(400).json({ error: 'Ungültige Eingabe' });
+  if (typeof gehalt !== 'number' || gehalt <= 0) {
+    return res.status(400).json({ error: 'Ungültiges Gehalt' });
   }
 
-  const steuer = brutto * (steuerSatz / 100);
-  const netto = brutto - steuer;
+  // Beispiel-Berechnung:
+  const lohnsteuer           = gehalt * 0.15;
+  const rentenversicherung   = gehalt * 0.093;
+  const krankenversicherung  = gehalt * 0.08;
+  const pflegeversicherung   = gehalt * 0.03;
+  const netto = gehalt - (lohnsteuer + rentenversicherung + krankenversicherung + pflegeversicherung);
 
-  res.json({ brutto, steuer, netto });
+  return res.json({
+    netto: netto,
+    abzuege: {
+      lohnsteuer: lohnsteuer,
+      rentenversicherung: rentenversicherung,
+      krankenversicherung: krankenversicherung,
+      pflegeversicherung: pflegeversicherung,
+    }
+  });
 });
 
 app.listen(PORT, () => {
-  console.log(`Server läuft auf Port ${PORT}`);
+  console.log(`✅ Server läuft auf Port ${PORT}`);
 });
